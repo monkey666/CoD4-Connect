@@ -6,12 +6,12 @@
 HttpSetUserAgent("Monkey")
 if $CmdLine[0]="" Then Exit
 If Ping("www.monk3y666.bplaced.net", 250)=0 then
-	If $CmdLine[2]<>"False" Then _Debug("Ping auf www.monk3y666.bplaced.net nicht erfolgreich")
+	If $CmdLine[2]<>"False" Then _Debug("Failed to ping to www.monk3y666.bplaced.net")
 	Exit Run($CmdLine[1])
 EndIf
 
 $iInetGet=InetGet("http://monk3y666.bplaced.net/filemanager/Autoit/Fertige%20Scripte/COD4/CoD4 Connect v3.exe", $CmdLine[1], 1)
-If $CmdLine[2]<>"False" Then _Debug("Return von InetGet: "&$iInetGet)
+If $CmdLine[2]<>"False" Then _Debug("Return from InetGet: "&$iInetGet)
 Exit Run($CmdLine[1])
 
 
