@@ -48,18 +48,18 @@ Global Const $sProgramVersion = "3.1.3"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
 If Ping("www.monk3y666.bplaced.net") <> 0 And @Compiled Then ;Auf Internet prüfen
-	If $iDebugMode Then _Debug("Ping zu www.monk3y666.bplaced.net erfolgreich")
+	If $iDebugMode Then _Debug("Succesfully pinged www.monk3y666.bplaced.net")
 	HttpSetUserAgent("Monkey")
 	$iInetGet = InetGet("http://monk3y666.bplaced.net/filemanager/Autoit/Fertige%20Scripte/COD4/Version.txt", @TempDir & "\Version.txt")
-	If $iDebugMode Then _Debug("Return von InetGet: " & $iInetGet)
+	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetGet)
 	HttpSetUserAgent("")
 	$sOnlineVersion = FileRead(@TempDir & "\Version.txt")
-	If $iDebugMode Then _Debug("Return von FileRead: " & $sOnlineVersion)
+	If $iDebugMode Then _Debug("Return from FileRead: " & $sOnlineVersion)
 	If _VersionCompare($sProgramVersion, $sOnlineVersion) = -1 Then
-		If $iDebugMode Then _Debug("Die Version auf dem FTP-Server ist neuer.")
-		$iMsgBox = MsgBox(68, "Update", "Es ist ein Update für das Programm verfügbar!" & @CRLF & "Jetzt updaten?")
+		If $iDebugMode Then _Debug("The Version on the FTP-Server is newer.")
+		$iMsgBox = MsgBox(68, "Update", "There is a newer version of this Tool available!" & @CRLF & "Update now?")
 		If $iMsgBox = 6 Then
-			If $iDebugMode Then _Debug("Starte Updater.exe.")
+			If $iDebugMode Then _Debug("Starting Updater.exe.")
 			Exit ShellExecute(@ScriptDir & "\Updater.exe", '"' & @ScriptFullPath & '" ' & $iDebugMode, @ScriptDir)
 		EndIf
 	EndIf
@@ -93,7 +93,7 @@ $Button2 = GUICtrlCreateButton("...", 264, 208, 25, 25, $WS_GROUP)
 GUICtrlSetOnEvent(-1, "_path")
 $Label5 = GUICtrlCreateLabel("Password:", 8, 144, 53, 17)
 $Input5 = GUICtrlCreateInput("", 72, 144, 89, 21)
-$Label2 = GUICtrlCreateLabel("Versuche:", 10, 240, 55, 17)
+$Label2 = GUICtrlCreateLabel("Attempts:", 10, 240, 55, 17)
 $Label6 = GUICtrlCreateLabel("0", 70, 240, 90, 17)
 $Label7 = GUICtrlCreateLabel("Ping avg.", 184, 240, 49, 17)
 $Label8 = GUICtrlCreateLabel("0", 240, 240, 30, 17)
@@ -101,7 +101,7 @@ $Label9 = GUICtrlCreateLabel("Servername:", 8, 48, 67, 17)
 $Input2 = GUICtrlCreateInput("", 88, 48, 161, 21)
 $Button3 = GUICtrlCreateButton("+", 272, 48, 25, 25, $WS_GROUP)
 GUICtrlSetOnEvent(-1, "_add")
-GUICtrlSetTip(-1, "Server speichern")
+GUICtrlSetTip(-1, " Save Server")
 GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 $Combo1 = GUICtrlCreateCombo("", 8, 8, 297, 25, $CBS_DROPDOWNLIST)
 GUICtrlSetOnEvent(-1, "_Combo")
@@ -116,7 +116,7 @@ If FileExists("Settings.ini") Then
 	$sRead = IniRead("Settings.ini", "Settings", "Gamepath", "")
 	GUICtrlSetData($Input4, $sRead)
 	If StringInStr(@ScriptFullPath, StringTrimRight($sRead, 10)) Then
-		Exit MsgBox(48, "Error!", "Kopiere das Programm in ein anderes Verzeichnis, weil es sonst zu Problemen mit dem Punkbuster kommen kann.")
+		Exit MsgBox(48, "Error!", "Copy this Tool in another directory, otherwise ther could be problems with PunkBuster.")
 	EndIf
 EndIf
 #EndRegion Gamepath setzen
@@ -168,12 +168,12 @@ While Sleep(50)
 	#Region ListView befüllen
 	If $fStats_Gui And $fGetStatus Then;Stats_Gui soll befüllt werden
 		If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Then
-			MsgBox(64, "Fehler", "Sie müssen mindestens eine IP und die Anzahl der Slots eintragen.")
+			MsgBox(64, "Error", "You have to enter at least a Server IP and the number of Slots.")
 
 		Else
 			$aSplit = StringSplit(GUICtrlRead($Input1), ":")
 			If @error Then
-				MsgBox(64, "Fehler", "Sie haben keine gültige IP eingetragen.")
+				MsgBox(64, "Error", "You have to enter a valid IP address")
 			Else
 				GUICtrlSetData($hStats_Gui_StatusLable, "Getting data...")
 				$sHeader = "ÿÿÿÿ getstatus" & @CRLF & _
@@ -193,7 +193,7 @@ While Sleep(50)
 					GUICtrlSetData($aListViewItem[$i], " | | |")
 				Next
 				If $sRecv = "" Then
-					MsgBox(64, "Fehler", "Server Stats konnten nicht ausgelesen werden.")
+					MsgBox(64, "Error", "Unable to receive data from Server")
 				Else
 					$sRecv = StringTrimRight($sRecv, 1)
 					$aSplit = StringSplit($sRecv, @LF)
@@ -282,22 +282,22 @@ WEnd
 #Region Funktionen
 Func _add()
 	If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Or GUICtrlRead($Input2) = "" Then
-		MsgBox(64, "Fehler", "Bitte alle Felder ausfüllen")
+		MsgBox(64, "Error", "Please enter all fields")
 	Else
 		IniWrite("Settings.ini", IniRead("Settings.ini", "Anzahl", "Zahl", "") + 1, "IP", GUICtrlRead($Input1))
 		IniWrite("Settings.ini", IniRead("Settings.ini", "Anzahl", "Zahl", "") + 1, "Slots", GUICtrlRead($Input3))
 		IniWrite("Settings.ini", IniRead("Settings.ini", "Anzahl", "Zahl", "") + 1, "Name", GUICtrlRead($Input2))
 		IniWrite("Settings.ini", IniRead("Settings.ini", "Anzahl", "Zahl", "") + 1, "Pass", GUICtrlRead($Input5))
 		IniWrite("Settings.ini", "Anzahl", "Zahl", IniRead("Settings.ini", "Anzahl", "Zahl", "") + 1)
-		$iMSG = MsgBox(68, "Neustarten?", "Das Programm muss neugestartet werden, damit der Server in der Liste angezeigt wird." & @CRLF & _
-				"Jetzt neustarten?")
+		$iMSG = MsgBox(68, "Restart?", "The Tool has to be restartet to show the added Server in the List." & @CRLF & _
+				"Restart now?")
 		If $iMSG = 6 Then Exit Run(@ScriptFullPath)
 	EndIf
 EndFunc   ;==>_add
 
 Func _Connect()
 	If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Or GUICtrlRead($Input4) = "" Then
-		MsgBox(64, "Fehler", "Bitte alle Felder ausfüllen")
+		MsgBox(64, "Error", "Please enter all fields")
 	Else
 		If $fConnect = 0 Then
 			$fConnect = 1
