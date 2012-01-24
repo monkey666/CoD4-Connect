@@ -1,7 +1,6 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=Icons\connect.ico
-#AutoIt3Wrapper_Outfile=Bin\CoD4 Connect.exe
-#AutoIt3Wrapper_Run_Tidy=y
+#AutoIt3Wrapper_icon=Icons\connect.ico
+#AutoIt3Wrapper_outfile=CoD4 Connect.exe
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #Region Includes
 #include <ButtonConstants.au3>
@@ -42,7 +41,7 @@ Else
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 #Region Updater
-Global Const $sProgramVersion = "3.1.4"
+Global Const $sProgramVersion = "3.1.5"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
 If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet prüfen
