@@ -1,7 +1,6 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=Icons\connect.ico
-#AutoIt3Wrapper_Outfile=Bin\CoD4 Connect v3.exe
-#AutoIt3Wrapper_UseX64=n
+#AutoIt3Wrapper_Outfile=Bin\CoD4 Connect.exe
 #AutoIt3Wrapper_Run_Tidy=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #Region Includes
@@ -45,16 +44,16 @@ If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 #Region Updater
 Global Const $sProgramVersion = "3.1.3"
 
-
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
-If Ping("www.monk3y666.bplaced.net") <> 0 And @Compiled Then ;Auf Internet prüfen
-	If $iDebugMode Then _Debug("Succesfully pinged www.monk3y666.bplaced.net")
+If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet prüfen
+	If $iDebugMode Then _Debug("Succesfully pinged www.github.com")
 	HttpSetUserAgent("Monkey")
-	$iInetGet = InetGet("http://monk3y666.bplaced.net/filemanager/Autoit/Fertige%20Scripte/COD4/Version.txt", @TempDir & "\Version.txt")
-	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetGet)
+	$iInetRead = BinaryToString(InetRead("https://github.com/monkey666/CoD4-Connect", 1))
+	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetRead)
 	HttpSetUserAgent("")
-	$sOnlineVersion = FileRead(@TempDir & "\Version.txt")
-	If $iDebugMode Then _Debug("Return from FileRead: " & $sOnlineVersion)
+	$aOnlineVersion = StringRegExp($iInetRead, "Version: (\d\.\d\.\d)", 3)
+	$sOnlineVersion = $aOnlineVersion[0]
+	If $iDebugMode Then _Debug("Return from StringRegExp: " & $sOnlineVersion)
 	If _VersionCompare($sProgramVersion, $sOnlineVersion) = -1 Then
 		If $iDebugMode Then _Debug("The Version on the FTP-Server is newer.")
 		$iMsgBox = MsgBox(68, "Update", "There is a newer version of this Tool available!" & @CRLF & "Update now?")
