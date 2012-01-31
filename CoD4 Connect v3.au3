@@ -255,9 +255,11 @@ While Sleep(50)
 				If $iplayers < $slots Then
 					If GUICtrlRead($Input5) <> "" Then
 						$Pass = GUICtrlRead($Input5)
+						Sleep($iConnetSleepTime)
 						ShellExecute($path, "+ connect " & $ip & ":" & $port & " + password " & $Pass, StringTrimRight($path, 9))
 						Exit
 					Else
+						Sleep($iConnetSleepTime)
 						ShellExecute($path, "+ connect " & $ip & ":" & $port, StringTrimRight($path, 9))
 						Exit
 					EndIf
