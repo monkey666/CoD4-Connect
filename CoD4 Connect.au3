@@ -1,8 +1,8 @@
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_icon=Icons\connect.ico
 #AutoIt3Wrapper_outfile=CoD4 Connect.exe
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-#Region Includes
+#endregion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#region Includes
 #include <ButtonConstants.au3>
 #include <EditConstants.au3>
 #include <GUIConstantsEx.au3>
@@ -14,10 +14,10 @@
 #include <ListviewConstants.au3>
 #include<array.au3>
 #include <GuiListView.au3>
-#EndRegion Includes
+#endregion Includes
 
 
-#Region Variables
+#region Variables
 Dim $sDefault = ""
 Dim $iVersuche = 0
 Dim $iping_show = 0
@@ -32,7 +32,8 @@ Dim $hPlayersLable
 Dim $hStats_Gui_StatusLable
 Dim $iConnetSleepTime
 Dim $iDebugMode = False
-#EndRegion Variables
+Dim $iGameStartUpTime
+#endregion Variables
 
 If IniRead("Settings.ini", "Settings", "Debug", "False") = "False" Then
 	$iDebugMode = False
@@ -40,7 +41,7 @@ Else
 	$iDebugMode = True
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
-#Region Updater
+#region Updater
 Global Const $sProgramVersion = "3.1.6"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
@@ -62,21 +63,21 @@ If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet prüfen
 		EndIf
 	EndIf
 EndIf
-#EndRegion Updater
+#endregion Updater
 
 
 
 Opt("GUIOnEventMode", 1)
 
 
-#Region Ini Check
+#region Ini Check
 If Not FileExists("Settings.ini") Then
 	IniWrite("Settings.ini", "Settings", "Gamepath", "")
 	IniWrite("Settings.ini", "Anzahl", "Zahl", 0)
 EndIf
-#EndRegion Ini Check
+#endregion Ini Check
 
-#Region GUI
+#region GUI
 $Form1_1 = GUICreate("CoD4 Connect v3", 350, 283)
 GUISetOnEvent($GUI_EVENT_CLOSE, "_Exit")
 $Label1 = GUICtrlCreateLabel("IP:Port :", 8, 80, 49, 17)
@@ -107,9 +108,9 @@ GUICtrlCreateLabel("v" & $sProgramVersion, 10, 260)
 $Button4 = GUICtrlCreateButton(">>", 325, 125)
 GUICtrlSetOnEvent(-1, "_Stats_Gui")
 GUISetState(@SW_SHOW)
-#EndRegion ### END Koda GUI section ###
+#endregion ### END Koda GUI section ###
 
-#Region Gamepath setzen
+#region Gamepath setzen
 If FileExists("Settings.ini") Then
 	$sRead = IniRead("Settings.ini", "Settings", "Gamepath", "")
 	GUICtrlSetData($Input4, $sRead)
@@ -117,30 +118,33 @@ If FileExists("Settings.ini") Then
 		Exit MsgBox(48, "Error!", "Copy this Tool in another directory, otherwise ther could be problems with PunkBuster.")
 	EndIf
 EndIf
-#EndRegion Gamepath setzen
-#Region UserSleepWert auslesen
+#endregion Gamepath setzen
+#region UserSleepWert auslesen
 $iConnetSleepTime = IniRead("Settings.ini", "Settings", "ConnectSleepTime", "")
 If $iConnetSleepTime = "" Then
 	IniWrite("Settings.ini", "Settings", "ConnectSleepTime", 500)
 	$iConnetSleepTime = 500
 EndIf
+#endregion UserSleepWert auslesen
 
-#EndRegion UserSleepWert auslesen
+#region UserStartTime auslesen
+$iGameStartUpTime = IniRead("Settings.ini", "Settings", "GameStartupTime", 10000)
+#endregion UserStartTime auslesen
 
-#Region ini -> Combo
+#region ini -> Combo
 If IniRead("Settings.ini", "Anzahl", "Zahl", "") <> 0 Then
 	For $i = 1 To IniRead("Settings.ini", "Anzahl", "Zahl", "")
 		GUICtrlSetData($Combo1, "Server " & $i & " (" & IniRead("Settings.ini", $i, "Name", "") & ")")
 	Next
 EndIf
-#EndRegion ini -> Combo
+#endregion ini -> Combo
 
 
 
 
-#Region Main Loop
+#region Main Loop
 While Sleep(50)
-	#Region Combo -> Inputfeldern
+	#region Combo -> Inputfeldern
 	If GUICtrlRead($Combo1) <> $sDefault Then
 		$aZahl = _StringBetween(GUICtrlRead($Combo1), "Server ", " (")
 		If IsArray($aZahl) Then
@@ -152,8 +156,8 @@ While Sleep(50)
 			$sDefault = GUICtrlRead($Combo1)
 		EndIf
 	EndIf
-	#EndRegion Combo -> Inputfeldern
-	#Region StatsGUI folgt MainGUI
+	#endregion Combo -> Inputfeldern
+	#region StatsGUI folgt MainGUI
 	If $fStats_Gui Then; Stats_Gui soll Main_Gui folgen
 		$aMainGUI_Pos = WinGetPos($Form1_1)
 		$aStatsGUI_Pos = WinGetPos($hStats_Gui)
@@ -162,8 +166,8 @@ While Sleep(50)
 		EndIf
 
 	EndIf
-	#EndRegion StatsGUI folgt MainGUI
-	#Region ListView befüllen
+	#endregion StatsGUI folgt MainGUI
+	#region ListView befüllen
 	If $fStats_Gui And $fGetStatus Then;Stats_Gui soll befüllt werden
 		If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Then
 			MsgBox(64, "Error", "You have to enter at least a Server IP and the number of Slots.")
@@ -215,14 +219,14 @@ While Sleep(50)
 		EndIf
 		$fGetStatus = Not $fGetStatus
 	EndIf
-	#EndRegion ListView befüllen
+	#endregion ListView befüllen
 
 
 
 
 
 	If _IsPressed("0D") And WinActive("CoD4 Connect v3") Then Call("_Connect")
-	#Region Verbinden
+	#region Verbinden
 	If $fConnect Then
 		$aIpPort = StringSplit(GUICtrlRead($Input1), ":")
 		$ip = $aIpPort[1]
@@ -255,10 +259,20 @@ While Sleep(50)
 						$Pass = GUICtrlRead($Input5)
 						Sleep($iConnetSleepTime)
 						ShellExecute($path, "+ connect " & $ip & ":" & $port & " + password " & $Pass, StringTrimRight($path, 9))
+						$hGameStartUpTimer = TimerInit()
+						Do
+							If WinExists("Im abgesicherten Modus starten?", "Modern Warfare") Then ControlClick("Im abgesicherten Modus starten?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
+							If WinExists("Optimale Einstellungen vornehmen?", "Modern Warfare") Then ControlClick("Optimale Einstellungen vornehmen?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
+						Until TimerDiff($hGameStartUpTimer) > $iGameStartUpTime
 						Exit
 					Else
 						Sleep($iConnetSleepTime)
 						ShellExecute($path, "+ connect " & $ip & ":" & $port, StringTrimRight($path, 9))
+						$hGameStartUpTimer = TimerInit()
+						Do
+							If WinExists("Im abgesicherten Modus starten?", "Modern Warfare") Then ControlClick("Im abgesicherten Modus starten?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
+							If WinExists("Optimale Einstellungen vornehmen?", "Modern Warfare") Then ControlClick("Optimale Einstellungen vornehmen?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
+						Until TimerDiff($hGameStartUpTimer) > $iGameStartUpTime
 						Exit
 					EndIf
 				EndIf
@@ -273,13 +287,13 @@ While Sleep(50)
 			Sleep($iConnetSleepTime);hier den userwert eintragen
 		EndIf
 	EndIf
-	#EndRegion Verbinden
+	#endregion Verbinden
 WEnd
-#EndRegion Main Loop
+#endregion Main Loop
 
 
 
-#Region Funktionen
+#region Funktionen
 Func _add()
 	If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Or GUICtrlRead($Input2) = "" Then
 		MsgBox(64, "Error", "Please enter all fields")
@@ -353,4 +367,4 @@ Func _Debug($sText)
 	FileWrite(@ScriptDir & "\Debug.txt", @HOUR & ":" & @MIN & ":" & @SEC & "		" & @ScriptName & " | " & $sText & @CRLF)
 EndFunc   ;==>_Debug
 
-#EndRegion Funktionen
+#endregion Funktionen
