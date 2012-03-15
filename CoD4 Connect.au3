@@ -45,7 +45,7 @@ If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 Global Const $sProgramVersion = "3.1.6"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
-If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet prüfen
+If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet prï¿½fen
 	If $iDebugMode Then _Debug("Succesfully pinged www.github.com")
 	HttpSetUserAgent("Monkey")
 	$iInetRead = BinaryToString(InetRead("https://github.com/monkey666/CoD4-Connect", 1))
@@ -167,8 +167,8 @@ While Sleep(50)
 
 	EndIf
 	#endregion StatsGUI folgt MainGUI
-	#region ListView befüllen
-	If $fStats_Gui And $fGetStatus Then;Stats_Gui soll befüllt werden
+	#region ListView befï¿½llen
+	If $fStats_Gui And $fGetStatus Then;Stats_Gui soll befï¿½llt werden
 		If GUICtrlRead($Input1) = "" Or GUICtrlRead($Input3) = "" Then
 			MsgBox(64, "Error", "You have to enter at least a Server IP and the number of Slots.")
 
@@ -178,7 +178,7 @@ While Sleep(50)
 				MsgBox(64, "Error", "You have to enter a valid IP address")
 			Else
 				GUICtrlSetData($hStats_Gui_StatusLable, "Getting data...")
-				$sHeader = "ÿÿÿÿ getstatus" & @CRLF & _
+				$sHeader = "ï¿½ï¿½ï¿½ï¿½ getstatus" & @CRLF & _
 						"." & @CRLF & @CRLF
 				UDPStartup()
 				$aSocket = UDPOpen($aSplit[1], $aSplit[2])
@@ -208,8 +208,8 @@ While Sleep(50)
 						For $o = 3 To $aPlayerSplit[0]
 							$sPlayerName &= $aPlayerSplit[$o]
 						Next
-						Opt("GUIDataSeparatorChar", "†")
-						GUICtrlSetData($aListViewItem[$i - 3], $sPlayerName & "†††")
+						Opt("GUIDataSeparatorChar", "ï¿½")
+						GUICtrlSetData($aListViewItem[$i - 3], $sPlayerName & "ï¿½ï¿½ï¿½")
 						Opt("GUIDataSeparatorChar", "|")
 					Next
 				EndIf
@@ -219,7 +219,7 @@ While Sleep(50)
 		EndIf
 		$fGetStatus = Not $fGetStatus
 	EndIf
-	#endregion ListView befüllen
+	#endregion ListView befï¿½llen
 
 
 
@@ -234,7 +234,7 @@ While Sleep(50)
 		$slots = GUICtrlRead($Input3)
 		$path = GUICtrlRead($Input4)
 
-		$sHeader = "ÿÿÿÿ getstatus" & @CRLF & _
+		$sHeader = "ï¿½ï¿½ï¿½ï¿½ getstatus" & @CRLF & _
 				"." & @CRLF & @CRLF
 		If $fConnect = 1 Then
 			UDPStartup()
@@ -342,7 +342,7 @@ Func _Stats_Gui()
 		$hPlayersLable = GUICtrlCreateLabel("Players: 0/0", 115, 225)
 		$hStats_Gui_StatusLable = GUICtrlCreateLabel("", 90, 250, 100, 25)
 		GUISetState(@SW_SHOW, $hStats_Gui)
-	ElseIf $fStats_Gui Then;Stats GUI löschen
+	ElseIf $fStats_Gui Then;Stats GUI lï¿½schen
 		GUIDelete($hStats_Gui)
 	EndIf
 	$fStats_Gui = Not $fStats_Gui
@@ -364,7 +364,7 @@ Func _Combo()
 EndFunc   ;==>_Combo
 
 Func _Debug($sText)
-	FileWrite(@ScriptDir & "\Debug.txt", @HOUR & ":" & @MIN & ":" & @SEC & "		" & @ScriptName & " | " & $sText & @CRLF)
+	FileWrite(@ScriptDir & "\Debug.txt", StringFormat("%.2i:%.2i:%.2i%40s | %s\n", @HOUR, @MIN, @SEC, @ScriptName, $sText))
 EndFunc   ;==>_Debug
 
 #endregion Funktionen
