@@ -33,6 +33,7 @@ Dim $hStats_Gui_StatusLable
 Dim $iConnetSleepTime
 Dim $iDebugMode = False
 Dim $iGameStartUpTime
+Dim $iUpdateServer
 #endregion Variables
 
 If IniRead("Settings.ini", "Settings", "Debug", "False") = "False" Then
@@ -46,12 +47,31 @@ Global Const $sProgramVersion = "3.1.7"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
 If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
+	$iUpdateServer=0
 	If $iDebugMode Then _Debug("Succesfully pinged www.github.com")
 	HttpSetUserAgent("Monkey")
 	$iInetRead = BinaryToString(InetRead("https://github.com/monkey666/CoD4-Connect", 1))
 	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetRead)
 	HttpSetUserAgent("")
-	$aOnlineVersion = StringRegExp($iInetRead, "Version: (\d\.\d\.\d)", 3)
+	$aOnlineVersion = StringRegExp($iInetRead, "Version: (\d+?\.\d+?\.\d+?)", 3)
+	$sOnlineVersion = $aOnlineVersion[0]
+	If $iDebugMode Then _Debug("Return from StringRegExp: " & $sOnlineVersion)
+	If _VersionCompare($sProgramVersion, $sOnlineVersion) = -1 Then
+		If $iDebugMode Then _Debug("The Version on Github is newer.")
+		$iMsgBox = MsgBox(68, "Update", "There is a newer version of this Tool available!" & @CRLF & "Update now?")
+		If $iMsgBox = 6 Then
+			If $iDebugMode Then _Debug("Starting Updater.exe.")
+			Exit ShellExecute(@ScriptDir & "\Updater.exe", '"' & @ScriptFullPath & '" ' & $iDebugMode &  " " &$iUpdateServer, @ScriptDir)
+		EndIf
+	EndIf
+ElseIf ping("www.monk3y666.bplaced.net")<> 0 and @Compiled Then
+	$iUpdateServer=1
+	If $iDebugMode Then _Debug("Succesfully pinged www.monk3y666.bplaced.net")
+	HttpSetUserAgent("Monkey")
+	$iInetRead = BinaryToString(InetRead("http://monk3y666.bplaced.net/filemanager/Autoit/Fertige%20Scripte/COD4/Version.txt", 1))
+	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetRead)
+	HttpSetUserAgent("")
+	$aOnlineVersion = StringRegExp($iInetRead, "(\d+?\.\d+?\.\d+?)", 3)
 	$sOnlineVersion = $aOnlineVersion[0]
 	If $iDebugMode Then _Debug("Return from StringRegExp: " & $sOnlineVersion)
 	If _VersionCompare($sProgramVersion, $sOnlineVersion) = -1 Then
@@ -59,7 +79,7 @@ If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
 		$iMsgBox = MsgBox(68, "Update", "There is a newer version of this Tool available!" & @CRLF & "Update now?")
 		If $iMsgBox = 6 Then
 			If $iDebugMode Then _Debug("Starting Updater.exe.")
-			Exit ShellExecute(@ScriptDir & "\Updater.exe", '"' & @ScriptFullPath & '" ' & $iDebugMode, @ScriptDir)
+			Exit ShellExecute(@ScriptDir & "\Updater.exe", '"' & @ScriptFullPath & '" ' & $iDebugMode &  " " &$iUpdateServer, @ScriptDir)
 		EndIf
 	EndIf
 EndIf
