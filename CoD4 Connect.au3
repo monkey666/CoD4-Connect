@@ -160,7 +160,7 @@ EndIf
 #endregion ini -> Combo
 
 
-
+UDPStartup()
 
 #region Main Loop
 While Sleep(50)
@@ -200,7 +200,7 @@ While Sleep(50)
 				GUICtrlSetData($hStats_Gui_StatusLable, "Getting data...")
 				$sHeader = "ÿÿÿÿgetstatus" & @CRLF & _
 						"." & @CRLF & @CRLF
-				UDPStartup()
+
 				$aSocket = UDPOpen($aSplit[1], $aSplit[2])
 
 				$hTimer = TimerInit()
@@ -210,7 +210,7 @@ While Sleep(50)
 					$sRecv = UDPRecv($aSocket, 2048)
 				Until $sRecv <> "" Or TimerDiff($hTimer) > 1000
 				UDPCloseSocket($aSocket)
-				UDPShutdown()
+
 				For $i = 0 To 69
 					GUICtrlSetData($aListViewItem[$i], " | | |")
 				Next
@@ -257,7 +257,7 @@ While Sleep(50)
 		$sHeader = "ÿÿÿÿ getstatus" & @CRLF & _
 				"." & @CRLF & @CRLF
 		If $fConnect = 1 Then
-			UDPStartup()
+
 			$iSocket = UDPOpen($ip, $port)
 			UDPSend($iSocket, $sHeader)
 			$iPing_Timer = TimerInit()
@@ -284,7 +284,7 @@ While Sleep(50)
 							If WinExists("Im abgesicherten Modus starten?", "Modern Warfare") Then ControlClick("Im abgesicherten Modus starten?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
 							If WinExists("Optimale Einstellungen vornehmen?", "Modern Warfare") Then ControlClick("Optimale Einstellungen vornehmen?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
 						Until TimerDiff($hGameStartUpTimer) > $iGameStartUpTime
-						Exit
+						_Exit()
 					Else
 						Sleep($iConnetSleepTime)
 						ShellExecute($path, "+ connect " & $ip & ":" & $port, StringTrimRight($path, 9))
@@ -293,12 +293,12 @@ While Sleep(50)
 							If WinExists("Im abgesicherten Modus starten?", "Modern Warfare") Then ControlClick("Im abgesicherten Modus starten?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
 							If WinExists("Optimale Einstellungen vornehmen?", "Modern Warfare") Then ControlClick("Optimale Einstellungen vornehmen?", "Modern Warfare", "[CLASS:Button; INSTANCE:2]")
 						Until TimerDiff($hGameStartUpTimer) > $iGameStartUpTime
-						Exit
+						_Exit()
 					EndIf
 				EndIf
 			EndIf
 			UDPCloseSocket($iSocket)
-			UDPShutdown()
+
 			$iping_sum += $iPing
 			$iVersuche += 1
 			$iping_show = Round($iping_sum / $iVersuche, 2)
@@ -374,6 +374,7 @@ Func _Getstats()
 EndFunc   ;==>_Getstats
 
 Func _Exit()
+	UDPShutdown()
 	Exit
 EndFunc   ;==>_Exit
 
