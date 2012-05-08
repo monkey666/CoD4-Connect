@@ -35,11 +35,13 @@ Dim $iDebugMode = False
 Dim $iGameStartUpTime
 Dim $iUpdateServer
 #endregion Variables
-
-If IniRead("Settings.ini", "Settings", "Debug", "False") = "False" Then
+$iDebugMode=IniRead("Settings.ini", "Settings", "Debug", "False")
+If $iDebugMode = "False" Or $iDebugMode = 0 Then
 	$iDebugMode = False
-Else
+ElseIf $iDebugMode= "True" Or $iDebugMode=1 Then
 	$iDebugMode = True
+Else
+	$iDebugMode=False
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 #region Updater
