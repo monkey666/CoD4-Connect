@@ -45,7 +45,7 @@ Else
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 #region Updater
-Global Const $sProgramVersion = "3.1.8"
+Global Const $sProgramVersion = "3.1.9"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
 If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
