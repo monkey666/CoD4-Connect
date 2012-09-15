@@ -341,8 +341,10 @@ Func _Connect()
 	Else
 		If $fConnect = 0 Then
 			$fConnect = 1
+			GUICtrlSetState($Combo1, $GUI_DISABLE)
 		ElseIf $fConnect = 1 Then
 			$fConnect = 0
+			GUICtrlSetState($Combo1, $GUI_ENABLE)
 		EndIf
 	EndIf
 EndFunc   ;==>_Connect
