@@ -342,9 +342,21 @@ Func _Connect()
 		If $fConnect = 0 Then
 			$fConnect = 1
 			GUICtrlSetState($Combo1, $GUI_DISABLE)
+			GUICtrlSetState($Input1, $GUI_DISABLE)
+			GUICtrlSetState($Input3, $GUI_DISABLE)
+			GUICtrlSetState($Input4, $GUI_DISABLE)
+			GUICtrlSetState($Input5, $GUI_DISABLE)
+			GUICtrlSetState($Input2, $GUI_DISABLE)
+			GUICtrlSetState($Button2, $GUI_DISABLE)
 		ElseIf $fConnect = 1 Then
 			$fConnect = 0
 			GUICtrlSetState($Combo1, $GUI_ENABLE)
+			GUICtrlSetState($Input1, $GUI_ENABLE)
+			GUICtrlSetState($Input3, $GUI_ENABLE)
+			GUICtrlSetState($Input4, $GUI_ENABLE)
+			GUICtrlSetState($Input5, $GUI_ENABLE)
+			GUICtrlSetState($Input2, $GUI_ENABLE)
+			GUICtrlSetState($Button2, $GUI_ENABLE)
 		EndIf
 	EndIf
 EndFunc   ;==>_Connect
