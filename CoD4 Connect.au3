@@ -55,7 +55,7 @@ If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
 	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetRead)
 	If $iInetRead <> "" Then
 		HttpSetUserAgent("")
-		$aRegExp = StringRegExp($iInetRead, "\QVersion: \E(\d+?\.\d+?\.\d+?)\s+?\QDownload-Link: \E(.+?)\s", 3)
+		$aRegExp = StringRegExp($iInetRead, '\QVersion: \E(\d+?\.\d+?\.\d+?)\s+?\QDownload-Link: <a href="\E(.+?)\s', 3)
 		$sOnlineVersion = $aRegExp[0]
 		$sDownloadLink=$aRegExp[1]
 		If $iDebugMode Then _Debug("Return from StringRegExp: " & $sOnlineVersion)
