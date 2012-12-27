@@ -45,7 +45,7 @@ Else
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
 #region Updater
-Global Const $sProgramVersion = "3.2.1"
+Global Const $sProgramVersion = "3.2.2"
 
 FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
 If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
@@ -113,6 +113,8 @@ GUICtrlSetOnEvent(-1, "_Combo")
 GUICtrlCreateLabel("v" & $sProgramVersion, 10, 260)
 $Button4 = GUICtrlCreateButton(">>", 325, 125)
 GUICtrlSetOnEvent(-1, "_Stats_Gui")
+$Button5=GUICtrlCreateButton("About", 280, 250, 65, 28)
+GUICtrlSetOnEvent(-1, "_About")
 GUISetState(@SW_SHOW)
 #endregion ### END Koda GUI section ###
 
@@ -387,5 +389,19 @@ EndFunc   ;==>_Combo
 Func _Debug($sText)
 	FileWrite(@ScriptDir & "\Debug.txt", StringFormat("%.2i:%.2i:%.2i%40s | %s\n", @HOUR, @MIN, @SEC, @ScriptName, $sText))
 EndFunc   ;==>_Debug
+
+Func _About()
+	Local $sAboutText="CoD4 Connect"&@CRLF& _
+"Version: "&$sProgramVersion&@CRLF& _
+""&@CRLF& _
+"This programm was written by Monkey form Codebot.de"&@CRLF& _
+"There is also a Thread that can be in the Forum"&@CRLF& _
+"http://www.codebot.de/board111-release-area/board114-anderes/3209-cod-4-connect/"&@CRLF& _
+""&@CRLF& _
+"The Source-Code can be found at Github.com"&@CRLF& _
+"https://github.com/monkey666/CoD4-Connect"
+	MsgBox(64, "About", $sAboutText, Default, $Form1_1)
+EndFunc
+
 
 #endregion Funktionen
