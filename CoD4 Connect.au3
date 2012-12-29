@@ -35,6 +35,7 @@ Dim $iDebugMode = False
 Dim $iGameStartUpTime
 Dim $iUpdateServer
 #endregion Variables
+
 $iDebugMode = IniRead("Settings.ini", "Settings", "Debug", "False")
 If $iDebugMode = "False" Or $iDebugMode = 0 Then
 	$iDebugMode = False
@@ -44,6 +45,7 @@ Else
 	$iDebugMode = False
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
+
 #region Updater
 Global Const $sProgramVersion = "3.2.2"
 
@@ -127,6 +129,7 @@ If FileExists("Settings.ini") Then
 	EndIf
 EndIf
 #endregion Gamepath setzen
+
 #region UserSleepWert auslesen
 $iConnetSleepTime = IniRead("Settings.ini", "Settings", "ConnectSleepTime", "")
 If $iConnetSleepTime = "" Then
@@ -402,6 +405,4 @@ Func _About()
 "https://github.com/monkey666/CoD4-Connect"
 	MsgBox(64, "About", $sAboutText, Default, $Form1_1)
 EndFunc
-
-
 #endregion Funktionen
