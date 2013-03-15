@@ -18,6 +18,7 @@
 
 
 #region Variables
+Global Const $sProgramVersion = "3.2.2"
 Dim $sDefault = ""
 Dim $iVersuche = 0
 Dim $iping_show = 0
@@ -36,6 +37,8 @@ Dim $iGameStartUpTime
 Dim $iUpdateServer
 #endregion Variables
 
+
+
 $iDebugMode = IniRead("Settings.ini", "Settings", "Debug", "False")
 If $iDebugMode = "False" Or $iDebugMode = 0 Then
 	$iDebugMode = False
@@ -45,34 +48,6 @@ Else
 	$iDebugMode = False
 EndIf
 If FileExists("Debug.txt") Then FileDelete("Debug.txt")
-
-#region Updater
-Global Const $sProgramVersion = "3.2.2"
-
-FileInstall("Updater.exe", @ScriptDir & "\Updater.exe", 1)
-If Ping("www.github.com") <> 0 And @Compiled Then ;Auf Internet pruefen
-	If $iDebugMode Then _Debug("Succesfully pinged www.github.com")
-	HttpSetUserAgent("Monkey")
-	$iInetRead = BinaryToString(InetRead("https://github.com/monkey666/CoD4-Connect", 1))
-	If $iDebugMode Then _Debug("Return from InetGet: " & $iInetRead)
-	If $iInetRead <> "" Then
-		HttpSetUserAgent("")
-		$aRegExp = StringRegExp($iInetRead, '\QVersion: \E(\d+?\.\d+?\.\d+?)\s+?\QDownload-Link: <a href="\E(.+?)\Q">\E', 3)
-		$sOnlineVersion = $aRegExp[0]
-		$sDownloadLink=$aRegExp[1]
-		If $iDebugMode Then _Debug("Return from StringRegExp: " & $sOnlineVersion)
-		If _VersionCompare($sProgramVersion, $sOnlineVersion) = -1 Then
-			If $iDebugMode Then _Debug("The Version on Github is newer.")
-			$iMsgBox = MsgBox(68, "Update", "There is a newer version of this Tool available!" & @CRLF & "Update now?")
-			If $iMsgBox = 6 Then
-				If $iDebugMode Then _Debug("Starting Updater.exe.")
-				Exit ShellExecute(@ScriptDir & "\Updater.exe", '"' & @ScriptFullPath & '" ' & $iDebugMode & " " & $sDownloadLink, @ScriptDir);CMDLine	[1]|Scriptpath	[2]|Debugmode	[3]|DL-Link
-			EndIf
-		EndIf
-	EndIf
-EndIf
-#endregion Updater
-
 
 
 Opt("GUIOnEventMode", 1)
