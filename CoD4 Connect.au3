@@ -375,6 +375,7 @@ Func _About()
 "This programm was written by Monkey form Codebot.de"&@CRLF& _
 "There is also a Thread that can be in the Forum"&@CRLF& _
 "http://www.codebot.de/board111-release-area/board114-anderes/3209-cod-4-connect/"&@CRLF& _
+"Also there will be a executable of the latest Version."&@CRLF& _
 ""&@CRLF& _
 "The Source-Code can be found at Github.com"&@CRLF& _
 "https://github.com/monkey666/CoD4-Connect"
