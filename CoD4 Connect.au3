@@ -90,7 +90,7 @@ GUICtrlSetOnEvent(-1, "_Combo")
 GUICtrlCreateLabel("v" & $sProgramVersion, 10, 260)
 $Button4 = GUICtrlCreateButton(">>", 325, 125)
 GUICtrlSetOnEvent(-1, "_Stats_Gui")
-$Button5=GUICtrlCreateButton("About", 280, 250, 65, 28)
+$Button5 = GUICtrlCreateButton("About", 280, 250, 65, 28)
 GUICtrlSetOnEvent(-1, "_About")
 GUISetState(@SW_SHOW)
 #endregion ### END Koda GUI section ###
@@ -369,16 +369,16 @@ Func _Debug($sText)
 EndFunc   ;==>_Debug
 
 Func _About()
-	Local $sAboutText="CoD4 Connect"&@CRLF& _
-"Version: "&$sProgramVersion&@CRLF& _
-""&@CRLF& _
-"This programm was written by Monkey form Codebot.de"&@CRLF& _
-"There is also a Thread that can be in the Forum"&@CRLF& _
-"http://www.codebot.de/board111-release-area/board114-anderes/3209-cod-4-connect/"&@CRLF& _
-"Also there will be a executable of the latest Version."&@CRLF& _
-""&@CRLF& _
-"The Source-Code can be found at Github.com"&@CRLF& _
-"https://github.com/monkey666/CoD4-Connect"
+	Local $sAboutText = "CoD4 Connect" & @CRLF & _
+			"Version: " & $sProgramVersion & @CRLF & _
+			"" & @CRLF & _
+			"This programm was written by Monkey form Codebot.de" & @CRLF & _
+			"There is also a Thread that can be in the Forum" & @CRLF & _
+			"http://www.codebot.de/board111-release-area/board114-anderes/3209-cod-4-connect/" & @CRLF & _
+			"Also there will be a executable of the latest Version." & @CRLF & _
+			"" & @CRLF & _
+			"The Source-Code can be found at Github.com" & @CRLF & _
+			"https://github.com/monkey666/CoD4-Connect"
 	MsgBox(64, "About", $sAboutText, Default, $Form1_1)
-EndFunc
+EndFunc   ;==>_About
 #endregion Funktionen
